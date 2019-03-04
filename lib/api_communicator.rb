@@ -17,17 +17,18 @@ def print_movies(films)
   # some iteration magic and puts out the movies in a nice list
   films.map! do |url|
     response_string = RestClient.get(url)
-    film = JSON.parse(response_string.body)
+    film = JSON.parse(response_string.body)["title"]
   end
-  puts films
+  i = 1
+  films.each do |film|
+    puts "#{i}. #{film}"
+    i += 1
+  end
 end
 
 def show_character_movies(character)
   films = get_character_movies_from_api(character)
   print_movies(films)
-end
-
-def to_s
 end
 
 ## BONUS
