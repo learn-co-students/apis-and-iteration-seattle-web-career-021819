@@ -6,6 +6,9 @@ def get_character_movies_from_api(character_name)
   #make the web request
   response_string = RestClient.get('http://www.swapi.co/api/people/')
   response_hash = JSON.parse(response_string)
+  response_hash["results"].find do |r|
+    r["name"].downcase.include?(character_name)
+  end["films"]
 
   # iterate over the response hash to find the collection of `films` for the given
   #   `character`
@@ -20,6 +23,18 @@ end
 
 def print_movies(films)
   # some iteration magic and puts out the movies in a nice list
+  # films.each_with_index do |film, index
+  #   response = RestClient.get(films[0])
+  #   rh = JSON.parse(response)
+  films.each_with_index do |film, index|
+    puts "#{index + 1}. #{get_name(film)}"
+  end
+end
+
+def get_name(film)
+  m1 = RestClient.get(film)
+  rh = JSON.parse(m1)
+  rh["title"]
 end
 
 def show_character_movies(character)
